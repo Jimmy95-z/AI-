@@ -1,4 +1,5 @@
 # safetensor大模型导入ollama
+[参考资料-CSDN](https://blog.csdn.net/m0_73365120/article/details/141901884)
 ## 准备gguf模型文件
 下载llama.cpp并完成编译（新版可能不用编译，没试）
 ```
