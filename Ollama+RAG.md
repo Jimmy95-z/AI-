@@ -1,3 +1,7 @@
+# safetensor大模型导入ollama
+## 下载llama
+
+
 # 传统知识库（RAG）：
 ## 如何分割文档？
 - 暴力分割，直接扔进去按照行数、条目数量分割
@@ -9,6 +13,7 @@
 ## RAG的效果不好
 - 数据处理
 - Prompt
+- RAG+大模型后胡言乱语的原因：1）所用大模型不够“重”，2）safetensor转的大模型，没有约束好num_ctx和temperature
 --------------------- 
 ## 使用ollama读取知识库并进行embedding
 
@@ -46,4 +51,9 @@ while True:
 ```
 storage_context = StorageContext.from_defaults(persist_dir="/root/law/embedding")
 index = load_index_from_storage(storage_context)
+```
+embedding失败的常见原因，用中文embedding模型处理英文知识库或者反之
+```
+Settings.embed_model = OllamaEmbedding(model_name="mxbai-embed-large")
+Settings.embed_model = OllamaEmbedding(model_name="shaw/dmeta-embedding-zh")
 ```
