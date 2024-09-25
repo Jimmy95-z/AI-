@@ -1,5 +1,33 @@
 # safetensor大模型导入ollama
-## 下载llama
+## 准备gguf模型文件
+下载llama.cpp并完成编译（新版可能不用编译，没试）
+```
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+make -j # 注意，这里我并没有增加 gpu 的支持，因为这次我只用 llama.cpp 进行模型转化和量化，不用它做推理
+```
+进入llama.cpp，执行requirments文件，注意把子requirments中涉及torch的删点，否则会卸掉gpu版本重装cpu版本
+
+进入llama.cpp，执行如下命令，将safetensor--->gguf
+```
+python convert_hf_to_gguf.py --outfile <要导出的文件地址.gguf> <微调后的模型来源目录>
+```
+## 将gguf导入ollama模型库
+创建makefile，格式如下。注意！temperature和ctx_num参数分别定义了模型活跃度和输出长度，越低模型胡咧咧的概率越低。SYSTEM后是默认prompts，需仔细设置
+```
+FROM PATH_TO_YOUR__GGUF_MODEL
+# set the temperature to 1 [higher is more creative, lower is more coherent]
+PARAMETER temperature 1
+# set the system message
+SYSTEM You are Mario from Super Mario Bros. Answer as Mario, the assistant, only.
+```
+执行如下命令，完成添加
+```
+ollama create NAME -f ./Modelfile
+
+# NAME: 在ollama中显⽰的名称
+# ./Modelfile: 绝对或者相对路径
+```
 
 
 # 传统知识库（RAG）：
